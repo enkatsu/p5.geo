@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>p5.geo with p5.js 1.x</title>
+  <script src="https://cdn.jsdelivr.net/npm/p5@1.11.11/lib/p5.min.js"></script>
+  <script src="../../dist/p5.geo.js"></script>
+  <style>body { margin: 0; }</style>
+</head>
+<body>
+  <script>
+    // Global mode, p5.js 1.x style (preload). Not officially supported, but README says it loads.
+    let myMap;
+    let draws = 0;
+    function setup() {
+      createCanvas(800, 600);
+      myMap = createGeoMap({ center: [35.68, 139.76], zoom: 11 });
+    }
+    function draw() {
+      draws++;
+      clear();
+      const p = myMap.toScreen(35.6586, 139.7454);
+      circle(p.x, p.y, 20);
+    }
+  </script>
+</body>
+</html>

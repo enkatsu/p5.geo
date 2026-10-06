@@ -1,0 +1,81 @@
+{
+  "name": "p5.geo",
+  "version": "0.1.0",
+  "description": "Geospatial visualization for p5.js",
+  "keywords": [
+    "p5.js",
+    "p5",
+    "map",
+    "geo",
+    "gis",
+    "maplibre",
+    "visualization"
+  ],
+  "homepage": "https://github.com/enkatsu/p5.geo#readme",
+  "bugs": {
+    "url": "https://github.com/enkatsu/p5.geo/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/enkatsu/p5.geo.git"
+  },
+  "license": "MIT",
+  "author": "Katsuya Endoh",
+  "type": "module",
+  "main": "dist/p5.geo.esm.js",
+  "module": "dist/p5.geo.esm.js",
+  "types": "types/index.d.ts",
+  "jsdelivr": "dist/p5.geo.min.js",
+  "unpkg": "dist/p5.geo.min.js",
+  "exports": {
+    ".": {
+      "types": "./types/index.d.ts",
+      "default": "./dist/p5.geo.esm.js"
+    },
+    "./global": {
+      "types": "./types/global.d.ts",
+      "default": "./dist/p5.geo.esm.js"
+    },
+    "./dist/*": "./dist/*",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist",
+    "src",
+    "types"
+  ],
+  "scripts": {
+    "build": "node scripts/build.mjs && node scripts/types.mjs",
+    "dev": "node scripts/build.mjs --serve",
+    "dev:lan": "node scripts/build.mjs --serve --lan",
+    "test": "vitest run && npm run test:types",
+    "docs": "node scripts/docs.mjs",
+    "types": "node scripts/types.mjs",
+    "test:types": "node scripts/types.mjs && tsc -p tsconfig.json && tsc -p tsconfig.global.json && tsc -p tsconfig.bundler.json",
+    "prepublishOnly": "npm run build && npm test"
+  },
+  "peerDependencies": {
+    "maplibre-gl": ">=5",
+    "p5": ">=2"
+  },
+  "peerDependenciesMeta": {
+    "p5": {
+      "optional": true
+    },
+    "maplibre-gl": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "esbuild": "^0.28.2",
+    "jsdoc-to-markdown": "^9.1.3",
+    "maplibre-gl": "^6.13.0",
+    "p5": "^2.3.4",
+    "typescript": "^7.0.2",
+    "vitest": "^5.0.3"
+  },
+  "allowScripts": {
+    "esbuild@0.28.2": true,
+    "fsevents@2.3.3": true
+  }
+}

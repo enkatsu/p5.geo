@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "allowJs": true,
+    "checkJs": false,
+    "declaration": true,
+    "emitDeclarationOnly": true,
+    "outDir": "dist/types",
+    "rootDir": "src",
+    "target": "es2022",
+    "module": "es2022",
+    "moduleResolution": "bundler",
+    "skipLibCheck": true,
+    "strict": false
+  },
+  "include": [
+    "src/addon.js",
+    "src/geomap.js",
+    "src/data.js",
+    "src/projection.js",
+    "src/styles.js"
+  ]
+}

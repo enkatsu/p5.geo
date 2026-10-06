@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>p5.geo browser checks</title>
+  <script src="https://cdn.jsdelivr.net/npm/p5@2.3.4/lib/p5.min.js"></script>
+  <script src="../../dist/p5.geo.js"></script>
+  <style>
+    body { margin: 16px; font: 14px/1.5 system-ui, sans-serif; }
+    #summary { font-size: 18px; font-weight: bold; margin-bottom: 8px; }
+    .pass { color: #1a7f37; }
+    .fail { color: #cf222e; }
+    details { margin: 2px 0; }
+    summary { cursor: pointer; }
+    pre { margin: 4px 0 8px 24px; font-size: 12px; background: #f6f8fa; padding: 8px; overflow-x: auto; }
+  </style>
+</head>
+<body>
+  <div id="summary">running…</div>
+  <div id="out"></div>
+  <script src="checks.js"></script>
+</body>
+</html>
