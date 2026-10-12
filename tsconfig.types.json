@@ -17,6 +17,7 @@
     "src/geomap.js",
     "src/data.js",
     "src/projection.js",
-    "src/styles.js"
+    "src/styles.js",
+    "src/contains.js"
   ]
 }

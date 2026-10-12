@@ -75,6 +75,8 @@ Methods accept numeric strings as well as numbers (see
     * [.maplibre](#GeoMap+maplibre) : <code>Object</code>
     * [.toScreen(lat, [lon])](#GeoMap+toScreen) ⇒ <code>p5.Vector</code> \| <code>Array.&lt;p5.Vector&gt;</code>
     * [.fromScreen(x, y)](#GeoMap+fromScreen) ⇒ [<code>LatLon</code>](#LatLon)
+    * [.contains(polygon, x, y)](#GeoMap+contains) ⇒ <code>boolean</code>
+    * [.isMouseOver(polygon)](#GeoMap+isMouseOver) ⇒ <code>boolean</code>
     * [.center([lat], [lon])](#GeoMap+center) ⇒ [<code>LatLon</code>](#LatLon) \| [<code>GeoMap</code>](#GeoMap)
     * [.zoom([level])](#GeoMap+zoom) ⇒ <code>number</code> \| [<code>GeoMap</code>](#GeoMap)
     * [.interactive([enabled])](#GeoMap+interactive) ⇒ <code>boolean</code> \| [<code>GeoMap</code>](#GeoMap)
@@ -148,6 +150,45 @@ Converts a position on the canvas to a latitude and longitude.
 ```js
 const here = myMap.fromScreen(mouseX, mouseY);
 text(`${here.lat.toFixed(4)}, ${here.lon.toFixed(4)}`, mouseX, mouseY);
+```
+<a name="GeoMap+contains"></a>
+
+### myMap.contains(polygon, x, y) ⇒ <code>boolean</code>
+Whether a position on the canvas is inside a polygon, as drawn with `toScreen()`: inside
+its outline and outside every hole. For the mouse, use [isMouseOver](#GeoMap+isMouseOver).
+
+**Kind**: instance method of [<code>GeoMap</code>](#GeoMap)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| polygon | <code>Object</code> \| [<code>Array.&lt;LatLon&gt;</code>](#LatLon) | An item   from [geoPolygons](#geoPolygons), or an outline as an array of `{ lat, lon }`. |
+| x | <code>number</code> |  |
+| y | <code>number</code> |  |
+
+**Example**  
+```js
+const touched = countries.filter((c) => myMap.contains(c, touches[0].x, touches[0].y));
+```
+<a name="GeoMap+isMouseOver"></a>
+
+### myMap.isMouseOver(polygon) ⇒ <code>boolean</code>
+Whether the mouse is over a polygon, as drawn with `toScreen()`. Always `false` while the
+mouse is outside the canvas. Handy for highlighting a country or region under the mouse.
+
+**Kind**: instance method of [<code>GeoMap</code>](#GeoMap)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| polygon | <code>Object</code> \| [<code>Array.&lt;LatLon&gt;</code>](#LatLon) | An item   from [geoPolygons](#geoPolygons), or an outline as an array of `{ lat, lon }`. |
+
+**Example**  
+```js
+for (const country of countries) {
+  fill(myMap.isMouseOver(country) ? 'tomato' : 'white');
+  beginShape();
+  for (const p of myMap.toScreen(country.outer)) vertex(p.x, p.y);
+  endShape(CLOSE);
+}
 ```
 <a name="GeoMap+center"></a>
 
@@ -347,6 +388,7 @@ or they throw a `TypeError`.
     * [.TILE_SIZE](#geo.TILE_SIZE) : <code>number</code>
     * [.MAX_LATITUDE](#geo.MAX_LATITUDE) : <code>number</code>
     * [.STYLES](#geo.STYLES) : <code>Object.&lt;string, string&gt;</code>
+    * [.containsLatLon(polygon, lat, lon)](#geo.containsLatLon) ⇒ <code>boolean</code>
     * [.geoBounds(data)](#geo.geoBounds) ⇒ <code>Object</code>
     * [.lonToWorldX(lon)](#geo.lonToWorldX) ⇒ <code>number</code>
     * [.latToWorldY(lat)](#geo.latToWorldY) ⇒ <code>number</code>
@@ -378,6 +420,27 @@ The basemap presets for the `basemap` option of [createGeoMap](#createGeoMap): k
 [OpenFreeMap](https://openfreemap.org/) styles, by name.
 
 **Kind**: static constant of [<code>geo</code>](#geo)  
+<a name="geo.containsLatLon"></a>
+
+### p5.geo.containsLatLon(polygon, lat, lon) ⇒ <code>boolean</code>
+Whether a latitude and longitude is inside a polygon: inside its outline and outside every
+hole. Useful for questions about the data itself, such as which country an earthquake was in.
+Edges are treated as straight lines on the map, as they are drawn.
+
+Polygons crossing the antimeridian need to be split there, as GeoJSON recommends.
+
+**Kind**: static method of [<code>geo</code>](#geo)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| polygon | <code>Object</code> \| [<code>Array.&lt;LatLon&gt;</code>](#LatLon) | An item   from [geoPolygons](#geoPolygons), or an outline as an array of `{ lat, lon }`. |
+| lat | <code>number</code> |  |
+| lon | <code>number</code> |  |
+
+**Example**  
+```js
+const inJapan = p5.geo.containsLatLon(japan, quake.lat, quake.lon);
+```
 <a name="geo.geoBounds"></a>
 
 ### p5.geo.geoBounds(data) ⇒ <code>Object</code>
@@ -552,7 +615,7 @@ import geo from 'p5.geo';
 p5.registerAddon(geo);
 ```
 
-The functions available as `p5.geo` in a sketch are also named exports: `GeoMap`, `geoPoints`, `geoLines`, `geoPolygons`, `geoBounds`, `project`, `projectPath`, `unproject`, `fitView`, `lonToWorldX`, `latToWorldY`, `worldXToLon`, `worldYToLat`, `worldSize`, `TILE_SIZE`, `MAX_LATITUDE` and `STYLES`.
+The functions available as `p5.geo` in a sketch are also named exports: `GeoMap`, `geoPoints`, `geoLines`, `geoPolygons`, `geoBounds`, `containsLatLon`, `project`, `projectPath`, `unproject`, `fitView`, `lonToWorldX`, `latToWorldY`, `worldXToLon`, `worldYToLat`, `worldSize`, `TILE_SIZE`, `MAX_LATITUDE` and `STYLES`.
 
 MapLibre GL JS loads from jsDelivr by default, as with a `<script>` tag. To bundle it instead, install `maplibre-gl` and pass it with the `maplibregl` option of `createGeoMap()`. p5.geo then doesn't add MapLibre's CSS, so import it yourself. MapLibre runs a worker from a separate file that bundlers don't pick up on their own; with Vite:
 

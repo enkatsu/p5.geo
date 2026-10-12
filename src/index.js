@@ -8,6 +8,7 @@
 export { default } from './addon.js';
 export { GeoMap } from './geomap.js';
 export { geoPoints, geoLines, geoPolygons, geoBounds } from './data.js';
+export { containsLatLon } from './contains.js';
 export {
   TILE_SIZE,
   MAX_LATITUDE,

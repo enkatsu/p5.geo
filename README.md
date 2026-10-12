@@ -62,6 +62,7 @@ Name your map variable something other than `map` (we use `myMap`): a variable c
 | `myMap.flyTo(lat, lon, zoom)` | Animates to a place. |
 | `myMap.fit(data)` | Centers and zooms so all of the data is on screen. |
 | `myMap.interactive(false)` | Locks the map so it can't be dragged or zoomed (also an option of `createGeoMap()`). |
+| `myMap.isMouseOver(polygon)` | Whether the mouse is over a polygon from `geoPolygons()`. |
 | `geoPoints()` / `geoLines()` / `geoPolygons()` | Extracts points, lines and polygons from CSV tables and GeoJSON. |
 
 See the [API reference](docs/api.md) for every option and detail. TypeScript types are included: `p5.geo` for instance mode, `p5.geo/global` for global mode.
@@ -131,7 +132,8 @@ p5.geo is organized in three layers. Each upper layer is optional.
 - [x] Projection-only mode (no basemap)
 - [x] GeoJSON / CSV helpers
 - [x] Locking the map (`interactive: false`) so the sketch can use the mouse
-- [ ] Hit-testing for drawn features (is the mouse over this polygon?)
+- [x] Hit-testing for polygons (`isMouseOver()`, `contains()`)
+- [ ] Hit-testing for points and lines
 - [ ] `saveCanvas()` that composites the map and the sketch
 - [x] Global mode and instance mode support
 - [x] npm package for bundlers, with TypeScript types

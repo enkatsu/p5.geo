@@ -1,4 +1,5 @@
-import { project, projectPath, unproject, fitView } from './projection.js';
+import { project, projectPath, unproject, fitView, lonToWorldX, latToWorldY, worldSize } from './projection.js';
+import { asPolygon, polygonContainsWorld } from './contains.js';
 import { geoBounds } from './data.js';
 import { loadMapLibre } from './maplibre-loader.js';
 import { resolveStyle } from './styles.js';
@@ -322,6 +323,65 @@ class GeoMap {
    */
   fromScreen(x, y) {
     return unproject(toNumber(x, 'fromScreen', 'x'), toNumber(y, 'fromScreen', 'y'), this._view);
+  }
+
+  /**
+   * Whether a position on the canvas is inside a polygon, as drawn with `toScreen()`: inside
+   * its outline and outside every hole. For the mouse, use {@link GeoMap#isMouseOver}.
+   * @param {{outer: Array<LatLon>, holes: Array<Array<LatLon>>}|Array<LatLon>} polygon - An item
+   *   from {@link geoPolygons}, or an outline as an array of `{ lat, lon }`.
+   * @param {number} x
+   * @param {number} y
+   * @returns {boolean}
+   * @example
+   * const touched = countries.filter((c) => myMap.contains(c, touches[0].x, touches[0].y));
+   */
+  contains(polygon, x, y) {
+    const p = asPolygon(polygon);
+    if (!p) {
+      warnOnce(
+        'contains:polygon',
+        `p5.geo: contains() and isMouseOver() expected an item from geoPolygons() or an array of { lat, lon }, but got ${describe(polygon)}.`
+      );
+      return false;
+    }
+    x = toNumber(x, 'contains', 'x');
+    y = toNumber(y, 'contains', 'y');
+    if (Number.isNaN(x) || Number.isNaN(y)) return false;
+    // The canvas position in world units, on the same world copies toScreen() draws.
+    const { lat, lon, zoom, width, height } = this._view;
+    const scale = worldSize(zoom);
+    const centerX = lonToWorldX(lon);
+    const wx = centerX + (x - width / 2) / scale;
+    const wy = latToWorldY(lat) + (y - height / 2) / scale;
+    try {
+      return polygonContainsWorld(p, wx, wy, centerX);
+    } catch (err) {
+      // A ring with coordinates that aren't numbers; GeoMap methods don't throw.
+      warnOnce('contains:coordinates', `p5.geo: contains() couldn't read the polygon's coordinates (${err.message}).`);
+      return false;
+    }
+  }
+
+  /**
+   * Whether the mouse is over a polygon, as drawn with `toScreen()`. Always `false` while the
+   * mouse is outside the canvas. Handy for highlighting a country or region under the mouse.
+   * @param {{outer: Array<LatLon>, holes: Array<Array<LatLon>>}|Array<LatLon>} polygon - An item
+   *   from {@link geoPolygons}, or an outline as an array of `{ lat, lon }`.
+   * @returns {boolean}
+   * @example
+   * for (const country of countries) {
+   *   fill(myMap.isMouseOver(country) ? 'tomato' : 'white');
+   *   beginShape();
+   *   for (const p of myMap.toScreen(country.outer)) vertex(p.x, p.y);
+   *   endShape(CLOSE);
+   * }
+   */
+  isMouseOver(polygon) {
+    const { mouseX, mouseY, width, height } = this._p;
+    const onCanvas = mouseX >= 0 && mouseX < width && mouseY >= 0 && mouseY < height;
+    // NaN makes contains() return false quietly, while still checking the polygon.
+    return onCanvas ? this.contains(polygon, mouseX, mouseY) : this.contains(polygon, NaN, NaN);
   }
 
   /**

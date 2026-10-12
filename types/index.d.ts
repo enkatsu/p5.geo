@@ -12,10 +12,12 @@ import type { GeoMap } from '../dist/types/geomap.js';
 import type * as projection from '../dist/types/projection.js';
 import type { geoPoints, geoLines, geoPolygons, geoBounds } from '../dist/types/data.js';
 import type { STYLES } from '../dist/types/styles.js';
+import type { containsLatLon } from '../dist/types/contains.js';
 
 export { default } from '../dist/types/addon.js';
 export { GeoMap, type LatLon } from '../dist/types/geomap.js';
 export { geoPoints, geoLines, geoPolygons, geoBounds } from '../dist/types/data.js';
+export { containsLatLon } from '../dist/types/contains.js';
 export {
   type View,
   TILE_SIZE,
@@ -64,6 +66,7 @@ export type Geo = Pick<
   | 'fitView'
 > & {
   geoBounds: typeof geoBounds;
+  containsLatLon: typeof containsLatLon;
   STYLES: typeof STYLES;
 };
 
