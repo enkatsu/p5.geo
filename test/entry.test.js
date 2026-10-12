@@ -1,4 +1,7 @@
 import { describe, it, expect, vi, afterEach } from 'vitest';
+import { readFileSync } from 'node:fs';
+
+const pkg = JSON.parse(readFileSync(new URL('../package.json', import.meta.url), 'utf8'));
 
 afterEach(() => {
   delete globalThis.p5;
@@ -22,6 +25,7 @@ describe('src/browser.js (<script> tags)', () => {
     expect(typeof lifecycles.predraw).toBe('function');
     expect(typeof lifecycles.remove).toBe('function');
     expect(typeof p5.geo.project).toBe('function');
+    expect(p5.geo.VERSION).toBe(pkg.version);
   });
 
   it('falls back to registerMethod for p5.js 1.x', async () => {
@@ -43,7 +47,7 @@ describe('src/index.js (bundlers)', () => {
     expect(globalThis.p5).toBeUndefined();
     expect(typeof mod.default).toBe('function');
     expect(mod.default.length).toBe(3); // (p5, fn, lifecycles), as p5.registerAddon() expects
-    for (const name of ['GeoMap', 'geoPoints', 'geoLines', 'geoPolygons', 'geoBounds', 'project', 'unproject', 'fitView', 'STYLES']) {
+    for (const name of ['GeoMap', 'geoPoints', 'geoLines', 'geoPolygons', 'geoBounds', 'containsLatLon', 'project', 'unproject', 'fitView', 'STYLES', 'VERSION']) {
       expect(mod[name], name).toBeDefined();
     }
   });

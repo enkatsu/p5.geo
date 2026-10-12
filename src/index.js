@@ -23,3 +23,4 @@ export {
   fitView,
 } from './projection.js';
 export { STYLES } from './styles.js';
+export { VERSION } from './version.js';

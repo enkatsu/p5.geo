@@ -45,7 +45,7 @@ import geo from 'p5.geo';
 p5.registerAddon(geo);
 ```
 
-The functions available as `p5.geo` in a sketch are also named exports: `GeoMap`, `geoPoints`, `geoLines`, `geoPolygons`, `geoBounds`, `containsLatLon`, `project`, `projectPath`, `unproject`, `fitView`, `lonToWorldX`, `latToWorldY`, `worldXToLon`, `worldYToLat`, `worldSize`, `TILE_SIZE`, `MAX_LATITUDE` and `STYLES`.
+The functions available as `p5.geo` in a sketch are also named exports: `GeoMap`, `geoPoints`, `geoLines`, `geoPolygons`, `geoBounds`, `containsLatLon`, `project`, `projectPath`, `unproject`, `fitView`, `lonToWorldX`, `latToWorldY`, `worldXToLon`, `worldYToLat`, `worldSize`, `TILE_SIZE`, `MAX_LATITUDE`, `STYLES` and `VERSION`.
 
 MapLibre GL JS loads from jsDelivr by default, as with a `<script>` tag. To bundle it instead, install `maplibre-gl` and pass it with the `maplibregl` option of `createGeoMap()`. p5.geo then doesn't add MapLibre's CSS, so import it yourself. MapLibre runs a worker from a separate file that bundlers don't pick up on their own; with Vite:
 

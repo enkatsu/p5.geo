@@ -13,6 +13,7 @@ import type * as projection from '../dist/types/projection.js';
 import type { geoPoints, geoLines, geoPolygons, geoBounds } from '../dist/types/data.js';
 import type { STYLES } from '../dist/types/styles.js';
 import type { containsLatLon } from '../dist/types/contains.js';
+import type { VERSION } from '../dist/types/version.js';
 
 export { default } from '../dist/types/addon.js';
 export { GeoMap, type LatLon } from '../dist/types/geomap.js';
@@ -33,6 +34,7 @@ export {
   fitView,
 } from '../dist/types/projection.js';
 export { STYLES } from '../dist/types/styles.js';
+export { VERSION } from '../dist/types/version.js';
 
 /** Options for {@link createGeoMap}. See docs/api.md. */
 export interface CreateGeoMapOptions {
@@ -68,6 +70,7 @@ export type Geo = Pick<
   geoBounds: typeof geoBounds;
   containsLatLon: typeof containsLatLon;
   STYLES: typeof STYLES;
+  VERSION: typeof VERSION;
 };
 
 declare module 'p5' {

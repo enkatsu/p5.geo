@@ -8,6 +8,8 @@ const common = {
   bundle: true,
   target: 'es2020',
   banner,
+  // src/version.js reads this.
+  define: { __P5GEO_VERSION__: JSON.stringify(pkg.version) },
   logLevel: 'info',
 };
 

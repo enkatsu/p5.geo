@@ -388,6 +388,7 @@ or they throw a `TypeError`.
     * [.TILE_SIZE](#geo.TILE_SIZE) : <code>number</code>
     * [.MAX_LATITUDE](#geo.MAX_LATITUDE) : <code>number</code>
     * [.STYLES](#geo.STYLES) : <code>Object.&lt;string, string&gt;</code>
+    * [.VERSION](#geo.VERSION) : <code>string</code>
     * [.containsLatLon(polygon, lat, lon)](#geo.containsLatLon) ⇒ <code>boolean</code>
     * [.geoBounds(data)](#geo.geoBounds) ⇒ <code>Object</code>
     * [.lonToWorldX(lon)](#geo.lonToWorldX) ⇒ <code>number</code>
@@ -420,6 +421,18 @@ The basemap presets for the `basemap` option of [createGeoMap](#createGeoMap): k
 [OpenFreeMap](https://openfreemap.org/) styles, by name.
 
 **Kind**: static constant of [<code>geo</code>](#geo)  
+<a name="geo.VERSION"></a>
+
+### p5.geo.VERSION : <code>string</code>
+The version of p5.geo, such as `"0.1.2"`, like `p5.VERSION` for p5.js. Handy for checking
+which version a sketch actually loaded, for example when a CDN or browser cache serves an
+older one.
+
+**Kind**: static constant of [<code>geo</code>](#geo)  
+**Example**  
+```js
+console.log(p5.geo.VERSION);
+```
 <a name="geo.containsLatLon"></a>
 
 ### p5.geo.containsLatLon(polygon, lat, lon) ⇒ <code>boolean</code>
@@ -615,7 +628,7 @@ import geo from 'p5.geo';
 p5.registerAddon(geo);
 ```
 
-The functions available as `p5.geo` in a sketch are also named exports: `GeoMap`, `geoPoints`, `geoLines`, `geoPolygons`, `geoBounds`, `containsLatLon`, `project`, `projectPath`, `unproject`, `fitView`, `lonToWorldX`, `latToWorldY`, `worldXToLon`, `worldYToLat`, `worldSize`, `TILE_SIZE`, `MAX_LATITUDE` and `STYLES`.
+The functions available as `p5.geo` in a sketch are also named exports: `GeoMap`, `geoPoints`, `geoLines`, `geoPolygons`, `geoBounds`, `containsLatLon`, `project`, `projectPath`, `unproject`, `fitView`, `lonToWorldX`, `latToWorldY`, `worldXToLon`, `worldYToLat`, `worldSize`, `TILE_SIZE`, `MAX_LATITUDE`, `STYLES` and `VERSION`.
 
 MapLibre GL JS loads from jsDelivr by default, as with a `<script>` tag. To bundle it instead, install `maplibre-gl` and pass it with the `maplibregl` option of `createGeoMap()`. p5.geo then doesn't add MapLibre's CSS, so import it yourself. MapLibre runs a worker from a separate file that bundlers don't pick up on their own; with Vite:
 

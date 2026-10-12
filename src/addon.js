@@ -3,6 +3,7 @@ import * as projection from './projection.js';
 import { STYLES } from './styles.js';
 import { geoPoints, geoLines, geoPolygons, geoBounds } from './data.js';
 import { containsLatLon } from './contains.js';
+import { VERSION } from './version.js';
 
 const maps = new Set();
 
@@ -84,5 +85,5 @@ export default function p5geo(p5, fn, lifecycles) {
   };
 
   p5.GeoMap = GeoMap;
-  p5.geo = { ...projection, geoBounds, containsLatLon, STYLES };
+  p5.geo = { ...projection, geoBounds, containsLatLon, STYLES, VERSION };
 }

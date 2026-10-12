@@ -18,6 +18,7 @@
     "src/data.js",
     "src/projection.js",
     "src/styles.js",
-    "src/contains.js"
+    "src/contains.js",
+    "src/version.js"
   ]
 }
