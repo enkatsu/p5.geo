@@ -6,16 +6,16 @@ export const examples = {
   basic: {
     title: 'Basic',
     description: 'Points written in the sketch, on a map. No data files.',
-    webEditor: '',
+    webEditor: 'https://editor.p5js.org/KatsuyaEndoh/sketches/BenYzEz9U',
   },
   'geojson-world': {
     title: 'GeoJSON: world',
     description: 'Country polygons loaded from the web, drawn without a basemap. Hover a country.',
-    webEditor: '',
+    webEditor: 'https://editor.p5js.org/KatsuyaEndoh/sketches/E32RnOcIV',
   },
   'csv-earthquakes': {
     title: 'CSV: earthquakes',
     description: 'A live CSV from the USGS, sized and colored by its columns.',
-    webEditor: '',
+    webEditor: 'https://editor.p5js.org/KatsuyaEndoh/sketches/pRbJr6hLx',
   },
 };
