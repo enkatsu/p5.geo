@@ -147,10 +147,14 @@ Requires Node.js 24 (see `.nvmrc`).
 
 ```sh
 npm install
-npm run dev    # rebuilds on change, serves http://localhost:8000/examples/
-npm test       # unit tests for the projection core
-npm run build  # writes dist/p5.geo.js and dist/p5.geo.min.js
+npm run dev      # rebuilds on change, serves http://localhost:8000/examples/
+npm run dev:lan  # the same, reachable from other devices on the network (to try a phone)
+npm test         # unit tests, plus checks that docs/api.md and the TypeScript types are up to date
+npm run build    # writes dist/: the <script> build, the bundler build (ESM) and the types
+npm run docs     # regenerates docs/api.md from the JSDoc comments in src/
 ```
+
+Some behavior needs a real browser (the basemap, resizing, removing a sketch). With `npm run dev` running, open http://localhost:8000/test/browser/ and check that every item passes.
 
 ## Related projects
 

@@ -1,7 +1,7 @@
 // Types for p5.geo with p5.js 2.x, for instance mode. For global mode, use "p5.geo/global".
 // With a bundler, register the default export: `p5.registerAddon(geo)`.
 //
-// Known limitation: `p5.geo` and `p5.GeoMap` (static properties of the p5 class) aren't typed.
+// Known limitation: `p5.geo` (a static property of the p5 class) isn't typed.
 // p5's types expose the class only as a default export, and TypeScript can add instance members
 // to it (`export default interface p5`) but not static ones. Use the `Geo` type with a cast:
 //   const geo = (p5 as unknown as { geo: Geo }).geo;

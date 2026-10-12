@@ -84,6 +84,5 @@ export default function p5geo(p5, fn, lifecycles) {
     }
   };
 
-  p5.GeoMap = GeoMap;
   p5.geo = { ...projection, geoBounds, containsLatLon, STYLES, VERSION };
 }

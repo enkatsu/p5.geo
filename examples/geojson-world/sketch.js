@@ -21,7 +21,10 @@ function draw() {
   background('#dfe8ef');
   stroke(255);
   strokeWeight(0.5);
-  let hovered = null;
+
+  // Find the country under the mouse first. A country made of several polygons (islands, for
+  // example) shares one properties object, so all of its parts can light up together.
+  const hovered = countries.find((c) => myMap.isMouseOver(c))?.properties;
 
   for (const country of countries) {
     const { GDP_MD, POP_EST } = country.properties;
@@ -29,10 +32,7 @@ function draw() {
     // Log scale: $500 → light, $100,000 → dark.
     const t = constrain(map(log(perPerson), log(500), log(100000), 0, 1), 0, 1);
     fill(POP_EST > 0 ? lerpColor(color('#f2e6c9'), color('#1b5e7a'), t) : 200);
-    if (myMap.isMouseOver(country)) {
-      fill('#ff7a59');
-      hovered = country;
-    }
+    if (country.properties === hovered) fill('#ff7a59');
 
     beginShape();
     for (const p of myMap.toScreen(country.outer)) vertex(p.x, p.y);
@@ -45,11 +45,11 @@ function draw() {
   }
 
   if (hovered) {
-    const { NAME, GDP_MD, POP_EST } = hovered.properties;
-    const perPerson = Math.round((GDP_MD * 1e6) / POP_EST).toLocaleString('en-US');
+    const { NAME, GDP_MD, POP_EST } = hovered;
+    const perPerson = POP_EST > 0 ? `$${Math.round((GDP_MD * 1e6) / POP_EST).toLocaleString('en-US')} per person` : 'no data';
     noStroke();
     fill(0);
     textSize(16);
-    text(`${NAME}: $${perPerson} per person`, 16, height - 16);
+    text(`${NAME}: ${perPerson}`, 16, height - 16);
   }
 }

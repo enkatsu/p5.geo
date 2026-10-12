@@ -26,6 +26,8 @@ describe('src/browser.js (<script> tags)', () => {
     expect(typeof lifecycles.remove).toBe('function');
     expect(typeof p5.geo.project).toBe('function');
     expect(p5.geo.VERSION).toBe(pkg.version);
+    // p5.js library guidelines: no classes on p5 itself (p5.GeoMap was removed in 0.1.2).
+    expect(p5.GeoMap).toBeUndefined();
   });
 
   it('falls back to registerMethod for p5.js 1.x', async () => {

@@ -641,4 +641,4 @@ maplibregl.setWorkerUrl(workerUrl);
 const myMap = p.createGeoMap({ maplibregl });
 ```
 
-TypeScript types are included: `p5.geo` for instance mode and the named exports, `p5.geo/global` for global mode. `p5.geo` and `p5.GeoMap` (static properties of p5) aren't typed; import the functions by name instead.
+TypeScript types are included: `p5.geo` for instance mode and the named exports, `p5.geo/global` for global mode. `p5.geo` (a static property of p5) isn't typed; import the functions by name instead.
