@@ -16,7 +16,7 @@ const places = [
 let myMap;
 
 function setup() {
-  createCanvas(800, 600);
+  createCanvas(windowWidth, windowHeight);
   myMap = createGeoMap({ center: [35.68, 139.76], zoom: 11 });
 }
 
@@ -39,4 +39,9 @@ function draw() {
       text(place.name, p.x + 16, p.y + 5);
     }
   }
+}
+
+// The map follows the canvas size.
+function windowResized() {
+  resizeCanvas(windowWidth, windowHeight);
 }

@@ -20,6 +20,9 @@ export async function renderApiDocs() {
       .replace(/^(#+ )geoMap\./gm, '$1myMap.')
       .replace(/^(#+ )geo\./gm, '$1p5.geo.')
       .replace(/^(#+ )geo : <code>object<\/code>/gm, '$1p5.geo')
+      // No links inside headings: the site's search takes a heading's first link as its anchor,
+      // so linked return types (such as GeoMap) would give several headings the same one.
+      .replace(/^#+ .*$/gm, (heading) => heading.replace(/\[([^\]]*)\]\(#[^)]*\)/g, '$1'))
       .replace(/\n{3,}/g, '\n\n')
   );
 }

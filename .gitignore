@@ -2,3 +2,7 @@ node_modules/
 dist/
 .DS_Store
 .vitest/
+docs/public/sketches/
+docs/public/dist/
+docs/.vitepress/dist/
+docs/.vitepress/cache/

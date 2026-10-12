@@ -8,7 +8,7 @@ let myMap;
 let quakes;
 
 async function setup() {
-  createCanvas(960, 540);
+  createCanvas(windowWidth, windowHeight);
   const table = await loadTable(DATA_URL, ',', 'header');
   quakes = geoPoints(table); // finds the latitude/longitude columns by name
   myMap = createGeoMap({ center: [20, 150], zoom: 1.2, basemap: 'positron' });
@@ -31,4 +31,8 @@ function draw() {
   fill(0);
   textSize(13);
   text(`${quakes.length} earthquakes (M4.5+, past 30 days) · USGS`, 10, height - 12);
+}
+
+function windowResized() {
+  resizeCanvas(windowWidth, windowHeight);
 }

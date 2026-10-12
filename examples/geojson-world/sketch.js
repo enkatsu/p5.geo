@@ -8,7 +8,7 @@ let myMap;
 let countries;
 
 async function setup() {
-  createCanvas(960, 540);
+  createCanvas(windowWidth, windowHeight);
   const world = await loadJSON(DATA_URL);
   countries = geoPolygons(world); // [{ outer, holes, properties }, ...]
   // Antarctica looks enormous in this projection, so leave it out.
@@ -52,4 +52,9 @@ function draw() {
     textSize(16);
     text(`${NAME}: ${perPerson}`, 16, height - 16);
   }
+}
+
+function windowResized() {
+  resizeCanvas(windowWidth, windowHeight);
+  if (myMap) myMap.fit(countries); // fit the world to the new size (once the data has loaded)
 }

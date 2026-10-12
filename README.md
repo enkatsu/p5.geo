@@ -6,6 +6,8 @@ p5.geo lets you work with maps and geographic data using the drawing functions y
 
 > **Status:** Early development. The API may change.
 
+**Documentation, guides and live examples: https://enkatsu.github.io/p5.geo/**
+
 ## Why p5.geo?
 
 Maps are one of the most compelling things to make with code, but getting started usually means learning a web-mapping framework, its style system, and an API-key signup flow before drawing a single dot. p5.geo aims to remove those barriers:
@@ -65,7 +67,7 @@ Name your map variable something other than `map` (we use `myMap`): a variable c
 | `myMap.isMouseOver(polygon)` | Whether the mouse is over a polygon from `geoPolygons()`. |
 | `geoPoints()` / `geoLines()` / `geoPolygons()` | Extracts points, lines and polygons from CSV tables and GeoJSON. |
 
-See the [API reference](docs/api.md) for every option and detail. TypeScript types are included: `p5.geo` for instance mode, `p5.geo/global` for global mode.
+See the [documentation site](https://enkatsu.github.io/p5.geo/) for guides and live examples, and the [API reference](docs/api.md) for every option and detail. TypeScript types are included: `p5.geo` for instance mode, `p5.geo/global` for global mode.
 
 Load files with p5's own `loadTable()` and `loadJSON()`, then pass the result to `geoPoints()`, `geoLines()` or `geoPolygons()`:
 
@@ -152,6 +154,7 @@ npm run dev:lan  # the same, reachable from other devices on the network (to try
 npm test         # unit tests, plus checks that docs/api.md and the TypeScript types are up to date
 npm run build    # writes dist/: the <script> build, the bundler build (ESM) and the types
 npm run docs     # regenerates docs/api.md from the JSDoc comments in src/
+npm run docs:dev # the documentation site (docs/, VitePress), with the examples running in it
 ```
 
 Some behavior needs a real browser (the basemap, resizing, removing a sketch). With `npm run dev` running, open http://localhost:8000/test/browser/ and check that every item passes.

@@ -42,7 +42,8 @@
   "files": [
     "dist",
     "src",
-    "types"
+    "types",
+    "CHANGELOG.md"
   ],
   "scripts": {
     "build": "node scripts/build.mjs && node scripts/types.mjs",
@@ -52,7 +53,10 @@
     "docs": "node scripts/docs.mjs",
     "types": "node scripts/types.mjs",
     "test:types": "node scripts/types.mjs && tsc -p tsconfig.json && tsc -p tsconfig.global.json && tsc -p tsconfig.bundler.json",
-    "prepublishOnly": "npm run build && npm test"
+    "prepublishOnly": "npm run build && npm test",
+    "docs:dev": "node scripts/site.mjs && vitepress dev docs",
+    "docs:build": "node scripts/site.mjs && vitepress build docs",
+    "docs:preview": "vitepress preview docs"
   },
   "peerDependencies": {
     "maplibre-gl": ">=5",
@@ -72,10 +76,12 @@
     "maplibre-gl": "^6.13.0",
     "p5": "^2.3.4",
     "typescript": "^7.0.2",
+    "vitepress": "^1.6.4",
     "vitest": "^5.0.3"
   },
   "allowScripts": {
     "esbuild@0.28.2": true,
-    "fsevents@2.3.3": true
+    "fsevents@2.3.3": true,
+    "esbuild@0.21.5": true
   }
 }
