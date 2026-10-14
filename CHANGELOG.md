@@ -4,6 +4,15 @@ All notable changes to p5.geo are listed here. The format follows [Keep a Change
 
 ## [Unreleased]
 
+## [0.1.3] - 2026-10-14
+
+No changes to the library itself.
+
+### Changed
+
+- The README links to the new documentation site, with guides and live examples: https://enkatsu.github.io/p5.geo/
+- The npm package now includes this changelog.
+
 ## [0.1.2] - 2026-10-12
 
 ### Added
@@ -34,7 +43,8 @@ First release.
 - Support for p5.js 2.x (global and instance mode), and loading in p5.js 1.x.
 - An npm package for bundlers, with TypeScript types.
 
-[Unreleased]: https://github.com/enkatsu/p5.geo/compare/v0.1.2...HEAD
+[Unreleased]: https://github.com/enkatsu/p5.geo/compare/v0.1.3...HEAD
+[0.1.3]: https://github.com/enkatsu/p5.geo/compare/v0.1.2...v0.1.3
 [0.1.2]: https://github.com/enkatsu/p5.geo/compare/v0.1.1...v0.1.2
 [0.1.1]: https://github.com/enkatsu/p5.geo/compare/v0.1.0...v0.1.1
 [0.1.0]: https://github.com/enkatsu/p5.geo/releases/tag/v0.1.0
