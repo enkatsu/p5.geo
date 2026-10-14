@@ -1,0 +1,40 @@
+# Publishes to npm when a version tag (v0.1.3, ...) is pushed, from exactly that commit.
+# Authenticates with npm trusted publishing (OIDC): no npm token is stored anywhere. Set up on
+# npmjs.com → p5.geo → Settings → Trusted Publisher → GitHub Actions:
+#   user: enkatsu, repository: p5.geo, workflow: publish.yml
+name: Publish
+
+on:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: read
+  id-token: write # lets npm verify that this workflow is the trusted publisher
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          registry-url: https://registry.npmjs.org
+          cache: npm
+
+      - name: Check the tag, package.json and CHANGELOG agree
+        run: |
+          version="$(node -p "require('./package.json').version")"
+          if [ "v$version" != "$GITHUB_REF_NAME" ]; then
+            echo "::error::Tag $GITHUB_REF_NAME doesn't match package.json version $version."
+            exit 1
+          fi
+          if ! grep -q "^## \[$version\]" CHANGELOG.md; then
+            echo "::error::CHANGELOG.md has no '## [$version]' section."
+            exit 1
+          fi
+
+      - run: npm ci
+      # prepublishOnly builds and runs every test first. Provenance is added automatically.
+      - run: npm publish
