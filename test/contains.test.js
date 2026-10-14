@@ -121,3 +121,72 @@ describe('GeoMap#contains and #isMouseOver', () => {
     warn.mockRestore();
   });
 });
+
+describe('GeoMap#contains and #isMouseOver for lines and points', () => {
+  const view = { center: [35.68, 139.76], zoom: 10, basemap: false };
+  const line = { path: ring([[35.6, 139.6], [35.7, 139.8], [35.65, 139.9]]), properties: {} };
+  const point = { lat: 35.68, lon: 139.76, properties: { name: 'center' } };
+
+  // Distance on screen from (x, y) to the polyline toScreen() draws, as a reference.
+  function screenDistance(points, x, y) {
+    let best = Infinity;
+    for (let i = 0; i < points.length - 1; i++) {
+      const a = points[i];
+      const b = points[i + 1];
+      const dx = b.x - a.x;
+      const dy = b.y - a.y;
+      const t = Math.max(0, Math.min(1, ((x - a.x) * dx + (y - a.y) * dy) / (dx * dx + dy * dy)));
+      best = Math.min(best, Math.hypot(a.x + t * dx - x, a.y + t * dy - y));
+    }
+    return best;
+  }
+
+  it('hits a line within the distance, matching what toScreen() draws', () => {
+    const map = new GeoMap(fakeP5(), view);
+    const drawn = map.toScreen(line.path);
+    for (let x = 0; x < 800; x += 13) {
+      for (let y = 0; y < 600; y += 11) {
+        const d = screenDistance(drawn, x, y);
+        if (Math.abs(d - 5) < 1e-6) continue; // right on the edge
+        expect(map.contains(line, x, y), `${x}, ${y}`).toBe(d <= 5);
+        if (Math.abs(d - 20) > 1e-6) expect(map.contains(line, x, y, 20), `${x}, ${y} (20px)`).toBe(d <= 20);
+      }
+    }
+  });
+
+  it('hits a line on the world copy toScreen() uses across the antimeridian', () => {
+    const across = { path: ring([[-20, -75], [-40, -65]]), properties: {} };
+    const map = new GeoMap(fakeP5(), { center: [-30, 150], zoom: 1, basemap: false });
+    const [a, b] = map.toScreen(across.path);
+    expect(map.contains(across, (a.x + b.x) / 2, (a.y + b.y) / 2)).toBe(true);
+  });
+
+  it('hits a point within the distance (10px by default)', () => {
+    const map = new GeoMap(fakeP5(), view);
+    const p = map.toScreen(point);
+    expect(map.contains(point, p.x + 9, p.y)).toBe(true);
+    expect(map.contains(point, p.x + 11, p.y)).toBe(false);
+    expect(map.contains(point, p.x + 11, p.y, 12)).toBe(true);
+    expect(map.contains({ lat: '35.68', lng: '139.76' }, p.x, p.y)).toBe(true);
+  });
+
+  it('isMouseOver() takes the distance too', () => {
+    const fake = fakeP5({ mouseX: 0, mouseY: 0 });
+    const map = new GeoMap(fake, view);
+    const p = map.toScreen(point);
+    Object.assign(fake, { mouseX: p.x + 15, mouseY: p.y });
+    expect(map.isMouseOver(point)).toBe(false);
+    expect(map.isMouseOver(point, 20)).toBe(true);
+    const [a, b] = map.toScreen(line.path.slice(0, 2));
+    Object.assign(fake, { mouseX: (a.x + b.x) / 2, mouseY: (a.y + b.y) / 2 + 3 });
+    expect(map.isMouseOver(line)).toBe(true);
+    expect(map.isMouseOver(line, 2)).toBe(false);
+  });
+
+  it('still treats an array of points as a polygon outline', () => {
+    const map = new GeoMap(fakeP5(), view);
+    const outline = ring([[35.6, 139.7], [35.6, 139.8], [35.7, 139.8], [35.7, 139.7]]);
+    const inside = map.toScreen(35.65, 139.75);
+    expect(map.contains(outline, inside.x, inside.y)).toBe(true);
+  });
+});

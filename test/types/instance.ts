@@ -26,7 +26,8 @@ new p5((p: p5) => {
     const locked: boolean = !myMap.interactive();
     const saving: Promise<void> = myMap.saveCanvas('my-map', 'png');
     void saving;
-    const over: boolean = myMap.isMouseOver([{ lat: 35, lon: 139 }]) || myMap.contains({ outer: [], holes: [] }, 10, 10);
+    const over: boolean = myMap.isMouseOver([{ lat: 35, lon: 139 }]) || myMap.contains({ outer: [], holes: [] }, 10, 10)
+      || myMap.isMouseOver({ path: [{ lat: 35, lon: 139 }] }, 4) || myMap.contains({ lat: 35, lon: 139 }, 10, 10, 12);
     void over;
     const here: LatLon = myMap.fromScreen(p.mouseX, p.mouseY);
     // p5.geo isn't typed on p5 itself (see types/index.d.ts); the Geo type covers it.

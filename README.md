@@ -47,8 +47,7 @@ Drag and scroll the map: the circle stays on Tokyo Tower. Next, see the [guide](
 - [x] Projection-only mode (no basemap)
 - [x] GeoJSON / CSV helpers
 - [x] Locking the map (`interactive: false`) so the sketch can use the mouse
-- [x] Hit-testing for polygons (`isMouseOver()`, `contains()`)
-- [ ] Hit-testing for points and lines
+- [x] Hit-testing for polygons, lines and points (`isMouseOver()`, `contains()`)
 - [x] `saveCanvas()` that composites the map and the sketch
 - [x] Global mode and instance mode support
 - [x] npm package for bundlers, with TypeScript types

@@ -1,6 +1,6 @@
 # Mouse and hit-testing
 
-## Is the mouse over a polygon?
+## Is the mouse over a shape?
 
 `myMap.isMouseOver(polygon)` tells whether the mouse is over a polygon from `geoPolygons()`, following the shape as it's drawn, holes included:
 
@@ -13,14 +13,14 @@ for (const country of countries) {
 }
 ```
 
-It's `false` while the mouse is outside the canvas. To test another position, such as a touch, use `myMap.contains(polygon, x, y)`.
-
-For points, use p5's `dist()`:
+For lines and points, give a distance in pixels (5 for lines and 10 for points if you leave it out):
 
 ```js
-const p = myMap.toScreen(place);
-const hovered = dist(mouseX, mouseY, p.x, p.y) < 10;
+myMap.isMouseOver(river, 4); // within 4 pixels of a line from geoLines()
+myMap.isMouseOver(place, 10); // within 10 pixels of a point, such as the radius of its circle
 ```
+
+`isMouseOver()` is `false` while the mouse is outside the canvas. To test another position, such as a touch, use `myMap.contains(item, x, y, distance)`.
 
 To ask about the data itself rather than the screen, such as which country an earthquake was in, use `p5.geo.containsLatLon(polygon, lat, lon)`.
 

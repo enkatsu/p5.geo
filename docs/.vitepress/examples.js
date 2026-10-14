@@ -20,7 +20,7 @@ export const examples = {
   },
   'geojson-rivers': {
     title: 'GeoJSON: rivers',
-    description: "The world's major rivers as GeoJSON lines, drawn without a basemap.",
+    description: "The world's major rivers as GeoJSON lines, drawn without a basemap. Hover a river.",
     webEditor: 'https://editor.p5js.org/KatsuyaEndoh/sketches/ea1QfG2jc',
   },
   'animation-trip': {

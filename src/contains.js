@@ -55,6 +55,33 @@ function shiftFor(ring, centerX) {
   return Math.round((minX + maxX) / 2 - centerX);
 }
 
+// Whether world point (x, y) is within `maxDistance` (world units) of a line as drawn on a map
+// centered at world x `centerX`. Web Mercator scales x and y alike, so distances in world units
+// times the world size in pixels are distances on screen. Used by GeoMap#contains.
+export function lineNearWorld(path, x, y, centerX, maxDistance) {
+  if (path.length === 0) return false;
+  const { xs, ys, minX, maxX, minY, maxY } = worldRing(path);
+  const shift = shiftFor(path, centerX);
+  if (x < minX - shift - maxDistance || x > maxX - shift + maxDistance) return false;
+  if (y < minY - maxDistance || y > maxY + maxDistance) return false;
+  const limit = maxDistance * maxDistance;
+  for (let i = 0; i < xs.length; i++) {
+    const ax = xs[i] - shift;
+    const ay = ys[i];
+    const bx = (i + 1 < xs.length ? xs[i + 1] : xs[i]) - shift;
+    const by = i + 1 < xs.length ? ys[i + 1] : ys[i];
+    // Distance from (x, y) to the segment a–b.
+    const dx = bx - ax;
+    const dy = by - ay;
+    const lengthSq = dx * dx + dy * dy;
+    const t = lengthSq === 0 ? 0 : Math.max(0, Math.min(1, ((x - ax) * dx + (y - ay) * dy) / lengthSq));
+    const ex = ax + t * dx - x;
+    const ey = ay + t * dy - y;
+    if (ex * ex + ey * ey <= limit) return true;
+  }
+  return false;
+}
+
 // { outer, holes } from geoPolygons(), or a plain array of { lat, lon } (a polygon without holes).
 export function asPolygon(value) {
   if (Array.isArray(value)) return { outer: value, holes: [] };

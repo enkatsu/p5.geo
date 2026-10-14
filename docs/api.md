@@ -76,8 +76,8 @@ Methods accept numeric strings as well as numbers (see
     * [.maplibre](#GeoMap+maplibre) : <code>Object</code>
     * [.toScreen(lat, [lon])](#GeoMap+toScreen) ⇒ <code>p5.Vector</code> \| <code>Array.&lt;p5.Vector&gt;</code>
     * [.fromScreen(x, y)](#GeoMap+fromScreen) ⇒ [<code>LatLon</code>](#LatLon)
-    * [.contains(polygon, x, y)](#GeoMap+contains) ⇒ <code>boolean</code>
-    * [.isMouseOver(polygon)](#GeoMap+isMouseOver) ⇒ <code>boolean</code>
+    * [.contains(item, x, y, [distance])](#GeoMap+contains) ⇒ <code>boolean</code>
+    * [.isMouseOver(item, [distance])](#GeoMap+isMouseOver) ⇒ <code>boolean</code>
     * [.center([lat], [lon])](#GeoMap+center) ⇒ [<code>LatLon</code>](#LatLon) \| [<code>GeoMap</code>](#GeoMap)
     * [.zoom([level])](#GeoMap+zoom) ⇒ <code>number</code> \| [<code>GeoMap</code>](#GeoMap)
     * [.interactive([enabled])](#GeoMap+interactive) ⇒ <code>boolean</code> \| [<code>GeoMap</code>](#GeoMap)
@@ -155,17 +155,26 @@ text(`${here.lat.toFixed(4)}, ${here.lon.toFixed(4)}`, mouseX, mouseY);
 ```
 <a name="GeoMap+contains"></a>
 
-### myMap.contains(polygon, x, y) ⇒ <code>boolean</code>
-Whether a position on the canvas is inside a polygon, as drawn with `toScreen()`: inside
-its outline and outside every hole. For the mouse, use [isMouseOver](#GeoMap+isMouseOver).
+### myMap.contains(item, x, y, [distance]) ⇒ <code>boolean</code>
+Whether a position on the canvas hits a shape, as drawn with `toScreen()`. What counts
+depends on what you pass:
+
+- a polygon from [geoPolygons](#geoPolygons) (or an outline as an array of `{ lat, lon }`): inside its
+  outline and outside every hole;
+- a line from [geoLines](#geoLines): within `distance` pixels of it (default 5);
+- a point from [geoPoints](#geoPoints), or `{ lat, lon }`: within `distance` pixels of it
+  (default 10). Pass the radius of the circle you draw.
+
+For the mouse, use [isMouseOver](#GeoMap+isMouseOver).
 
 **Kind**: instance method of [<code>GeoMap</code>](#GeoMap)  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| polygon | <code>Object</code> \| [<code>Array.&lt;LatLon&gt;</code>](#LatLon) | An item   from [geoPolygons](#geoPolygons), or an outline as an array of `{ lat, lon }`. |
+| item | <code>Object</code> \| [<code>Array.&lt;LatLon&gt;</code>](#LatLon) | A polygon, line or point. |
 | x | <code>number</code> |  |
 | y | <code>number</code> |  |
+| [distance] | <code>number</code> | For lines and points, in pixels. |
 
 **Example**  
 ```js
@@ -173,15 +182,17 @@ const touched = countries.filter((c) => myMap.contains(c, touches[0].x, touches[
 ```
 <a name="GeoMap+isMouseOver"></a>
 
-### myMap.isMouseOver(polygon) ⇒ <code>boolean</code>
-Whether the mouse is over a polygon, as drawn with `toScreen()`. Always `false` while the
-mouse is outside the canvas.
+### myMap.isMouseOver(item, [distance]) ⇒ <code>boolean</code>
+Whether the mouse is over a shape, as drawn with `toScreen()`: inside a polygon, or within
+`distance` pixels of a line (default 5) or a point (default 10). Always `false` while the
+mouse is outside the canvas. See [contains](#GeoMap+contains) for what you can pass.
 
 **Kind**: instance method of [<code>GeoMap</code>](#GeoMap)  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| polygon | <code>Object</code> \| [<code>Array.&lt;LatLon&gt;</code>](#LatLon) | An item   from [geoPolygons](#geoPolygons), or an outline as an array of `{ lat, lon }`. |
+| item | <code>Object</code> \| [<code>Array.&lt;LatLon&gt;</code>](#LatLon) | A polygon, line or point. |
+| [distance] | <code>number</code> | For lines and points, in pixels. |
 
 **Example**  
 ```js
@@ -191,6 +202,12 @@ for (const country of countries) {
   for (const p of myMap.toScreen(country.outer)) vertex(p.x, p.y);
   endShape(CLOSE);
 }
+```
+**Example**  
+```js
+const p = myMap.toScreen(place);
+circle(p.x, p.y, 20);
+if (myMap.isMouseOver(place, 10)) text(place.properties.name, p.x + 12, p.y);
 ```
 <a name="GeoMap+center"></a>
 

@@ -1,5 +1,5 @@
 import { project, projectPath, unproject, fitView, lonToWorldX, latToWorldY, worldSize } from './projection.js';
-import { asPolygon, polygonContainsWorld } from './contains.js';
+import { asPolygon, polygonContainsWorld, lineNearWorld } from './contains.js';
 import { geoBounds } from './data.js';
 import { loadMapLibre } from './maplibre-loader.js';
 import { resolveStyle } from './styles.js';
@@ -39,6 +39,18 @@ function toNumber(value, fn, name) {
   warnOnce(`${fn}:${name}`, `p5.geo: ${fn}() expected a number for ${name}, but got ${describe(value)}.`);
   return NaN;
 }
+
+// What contains() and isMouseOver() test: polygons have an outline (an array of points also
+// counts as one, as before lines were supported), lines have a path, points have a latitude.
+function kindOf(item) {
+  if (Array.isArray(item) || Array.isArray(item?.outer)) return 'polygon';
+  if (Array.isArray(item?.path)) return 'line';
+  if (item != null && typeof item === 'object' && item.lat != null) return 'point';
+  return null;
+}
+
+// How close, in pixels, counts as a hit when no distance is given.
+const DEFAULT_DISTANCE = { polygon: 0, line: 5, point: 10 };
 
 // Accepts [lat, lon] or { lat, lon } (also { lat, lng }), with numbers or numeric strings.
 function parseLatLon(value, fn) {
@@ -334,28 +346,44 @@ class GeoMap {
   }
 
   /**
-   * Whether a position on the canvas is inside a polygon, as drawn with `toScreen()`: inside
-   * its outline and outside every hole. For the mouse, use {@link GeoMap#isMouseOver}.
-   * @param {{outer: Array<LatLon>, holes: Array<Array<LatLon>>}|Array<LatLon>} polygon - An item
-   *   from {@link geoPolygons}, or an outline as an array of `{ lat, lon }`.
+   * Whether a position on the canvas hits a shape, as drawn with `toScreen()`. What counts
+   * depends on what you pass:
+   *
+   * - a polygon from {@link geoPolygons} (or an outline as an array of `{ lat, lon }`): inside its
+   *   outline and outside every hole;
+   * - a line from {@link geoLines}: within `distance` pixels of it (default 5);
+   * - a point from {@link geoPoints}, or `{ lat, lon }`: within `distance` pixels of it
+   *   (default 10). Pass the radius of the circle you draw.
+   *
+   * For the mouse, use {@link GeoMap#isMouseOver}.
+   * @param {Object|Array<LatLon>} item - A polygon, line or point.
    * @param {number} x
    * @param {number} y
+   * @param {number} [distance] - For lines and points, in pixels.
    * @returns {boolean}
    * @example
    * const touched = countries.filter((c) => myMap.contains(c, touches[0].x, touches[0].y));
    */
-  contains(polygon, x, y) {
-    const p = asPolygon(polygon);
-    if (!p) {
+  contains(item, x, y, distance) {
+    const kind = kindOf(item);
+    if (!kind) {
       warnOnce(
-        'contains:polygon',
-        `p5.geo: contains() and isMouseOver() expected an item from geoPolygons() or an array of { lat, lon }, but got ${describe(polygon)}.`
+        'contains:item',
+        `p5.geo: contains() and isMouseOver() expected an item from geoPolygons(), geoLines() or geoPoints(), or { lat, lon }, but got ${describe(item)}.`
       );
       return false;
     }
     x = toNumber(x, 'contains', 'x');
     y = toNumber(y, 'contains', 'y');
-    if (Number.isNaN(x) || Number.isNaN(y)) return false;
+    const fn = 'contains';
+    const limit = distance === undefined ? DEFAULT_DISTANCE[kind] : toNumber(distance, fn, 'distance');
+    if (Number.isNaN(x) || Number.isNaN(y) || Number.isNaN(limit)) return false;
+
+    if (kind === 'point') {
+      const ll = parseLatLon(item, fn);
+      const p = project(ll.lat, ll.lon, this._view);
+      return Math.hypot(p.x - x, p.y - y) <= limit;
+    }
     // The canvas position in world units, on the same world copies toScreen() draws.
     const { lat, lon, zoom, width, height } = this._view;
     const scale = worldSize(zoom);
@@ -363,19 +391,21 @@ class GeoMap {
     const wx = centerX + (x - width / 2) / scale;
     const wy = latToWorldY(lat) + (y - height / 2) / scale;
     try {
-      return polygonContainsWorld(p, wx, wy, centerX);
+      if (kind === 'line') return lineNearWorld(item.path, wx, wy, centerX, limit / scale);
+      return polygonContainsWorld(asPolygon(item), wx, wy, centerX);
     } catch (err) {
-      // A ring with coordinates that aren't numbers; GeoMap methods don't throw.
-      warnOnce('contains:coordinates', `p5.geo: contains() couldn't read the polygon's coordinates (${err.message}).`);
+      // Coordinates that aren't numbers; GeoMap methods don't throw.
+      warnOnce('contains:coordinates', `p5.geo: contains() couldn't read the coordinates (${err.message}).`);
       return false;
     }
   }
 
   /**
-   * Whether the mouse is over a polygon, as drawn with `toScreen()`. Always `false` while the
-   * mouse is outside the canvas.
-   * @param {{outer: Array<LatLon>, holes: Array<Array<LatLon>>}|Array<LatLon>} polygon - An item
-   *   from {@link geoPolygons}, or an outline as an array of `{ lat, lon }`.
+   * Whether the mouse is over a shape, as drawn with `toScreen()`: inside a polygon, or within
+   * `distance` pixels of a line (default 5) or a point (default 10). Always `false` while the
+   * mouse is outside the canvas. See {@link GeoMap#contains} for what you can pass.
+   * @param {Object|Array<LatLon>} item - A polygon, line or point.
+   * @param {number} [distance] - For lines and points, in pixels.
    * @returns {boolean}
    * @example
    * for (const country of countries) {
@@ -384,12 +414,16 @@ class GeoMap {
    *   for (const p of myMap.toScreen(country.outer)) vertex(p.x, p.y);
    *   endShape(CLOSE);
    * }
+   * @example
+   * const p = myMap.toScreen(place);
+   * circle(p.x, p.y, 20);
+   * if (myMap.isMouseOver(place, 10)) text(place.properties.name, p.x + 12, p.y);
    */
-  isMouseOver(polygon) {
+  isMouseOver(item, distance) {
     const { mouseX, mouseY, width, height } = this._p;
     const onCanvas = mouseX >= 0 && mouseX < width && mouseY >= 0 && mouseY < height;
-    // NaN makes contains() return false quietly, while still checking the polygon.
-    return onCanvas ? this.contains(polygon, mouseX, mouseY) : this.contains(polygon, NaN, NaN);
+    // NaN makes contains() return false quietly, while still checking the item.
+    return onCanvas ? this.contains(item, mouseX, mouseY, distance) : this.contains(item, NaN, NaN, distance);
   }
 
   /**

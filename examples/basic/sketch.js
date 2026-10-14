@@ -25,7 +25,7 @@ function draw() {
 
   for (const place of places) {
     const p = myMap.toScreen(place.lat, place.lon);
-    const hovered = dist(mouseX, mouseY, p.x, p.y) < 10;
+    const hovered = myMap.isMouseOver(place, 10); // within 10 pixels
 
     stroke(255);
     strokeWeight(2);
