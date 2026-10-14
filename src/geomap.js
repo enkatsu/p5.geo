@@ -255,6 +255,16 @@ class GeoMap {
     if (this._map?._frameRequest && this._isLooping()) this._map.redraw();
   }
 
+  /**
+   * Called right after each draw(). Moving the map from draw(), with center() for example,
+   * would otherwise show the map a frame behind the shapes drawn at the new position.
+   * (Looping sketches only: in noLoop() sketches, map renders call redraw().)
+   * @private
+   */
+  _afterDraw() {
+    if (this._map?._frameRequest && this._isLooping()) this._map.redraw();
+  }
+
   // ---- Public API ----
 
   /**

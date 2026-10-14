@@ -4,6 +4,17 @@ All notable changes to p5.geo are listed here. The format follows [Keep a Change
 
 ## [Unreleased]
 
+## [0.1.4] - 2026-10-14
+
+### Fixed
+
+- Moving the map from `draw()`, with `center()` for example, no longer shows the map a frame behind the shapes drawn on it.
+
+### Changed
+
+- The documentation site moved to https://p5geo.enkatsu.org/ (the old address redirects), and the package's homepage points to it.
+- A shorter README, pointing to the documentation site for guides and examples.
+
 ## [0.1.3] - 2026-10-14
 
 No changes to the library itself.
@@ -43,7 +54,8 @@ First release.
 - Support for p5.js 2.x (global and instance mode), and loading in p5.js 1.x.
 - An npm package for bundlers, with TypeScript types.
 
-[Unreleased]: https://github.com/enkatsu/p5.geo/compare/v0.1.3...HEAD
+[Unreleased]: https://github.com/enkatsu/p5.geo/compare/v0.1.4...HEAD
+[0.1.4]: https://github.com/enkatsu/p5.geo/compare/v0.1.3...v0.1.4
 [0.1.3]: https://github.com/enkatsu/p5.geo/compare/v0.1.2...v0.1.3
 [0.1.2]: https://github.com/enkatsu/p5.geo/compare/v0.1.1...v0.1.2
 [0.1.1]: https://github.com/enkatsu/p5.geo/compare/v0.1.0...v0.1.1

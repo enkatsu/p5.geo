@@ -230,6 +230,27 @@ async function newMapSketch(width = 800, height = 600, options = {}, renderer) {
       && f.afterTwoCancelledPresses === 1 && /interactive: false/.test(f.message);
   });
 
+  await check('moving the map inside draw() renders it in the same frame', async (f) => {
+    const p = await newMapSketch();
+    let lon = TOKYO.lon;
+    p.draw = () => {
+      p.clear();
+      lon += 0.01;
+      p.myMap.center(TOKYO.lat, lon);
+    };
+    // Record where the map actually was each time it rendered during the frame.
+    const m = p.myMap.maplibre;
+    const rendered = [];
+    const onRender = () => rendered.push(m.getCenter().lng);
+    m.on('render', onRender);
+    await p.redraw();
+    m.off('render', onRender);
+    f.target = lon;
+    f.renderedDuringFrame = rendered;
+    p.remove();
+    return rendered.length > 0 && close(rendered.at(-1), lon, 1e-9);
+  });
+
   await check('noLoop() sketches redraw when the map moves', async (f) => {
     const p = await newMapSketch();
     p.noLoop();

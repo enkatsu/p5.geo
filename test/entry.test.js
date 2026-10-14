@@ -23,6 +23,7 @@ describe('src/browser.js (<script> tags)', () => {
     expect(typeof fn.createGeoMap).toBe('function');
     expect(typeof fn.geoPoints).toBe('function');
     expect(typeof lifecycles.predraw).toBe('function');
+    expect(typeof lifecycles.postdraw).toBe('function');
     expect(typeof lifecycles.remove).toBe('function');
     expect(typeof p5.geo.project).toBe('function');
     expect(p5.geo.VERSION).toBe(pkg.version);
@@ -35,7 +36,7 @@ describe('src/browser.js (<script> tags)', () => {
     globalThis.p5 = { prototype: { registerMethod } };
     await import('../src/browser.js');
     expect(typeof globalThis.p5.prototype.createGeoMap).toBe('function');
-    expect(registerMethod.mock.calls.map(([name]) => name)).toEqual(['pre', 'remove']);
+    expect(registerMethod.mock.calls.map(([name]) => name)).toEqual(['pre', 'post', 'remove']);
   });
 
   it('explains that p5.js has to come first', async () => {

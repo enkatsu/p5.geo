@@ -1,6 +1,6 @@
 {
   "name": "p5.geo",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "Geospatial visualization for p5.js",
   "keywords": [
     "p5.js",
@@ -40,7 +40,11 @@
     "./package.json": "./package.json"
   },
   "files": [
-    "dist",
+    "dist/p5.geo.js",
+    "dist/p5.geo.min.js",
+    "dist/p5.geo.min.js.map",
+    "dist/p5.geo.esm.js",
+    "dist/types",
     "src",
     "types",
     "CHANGELOG.md"

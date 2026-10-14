@@ -77,6 +77,10 @@ export default function p5geo(p5, fn, lifecycles) {
     for (const map of mapsOf(this)) map._beforeDraw();
   };
 
+  lifecycles.postdraw = function () {
+    for (const map of mapsOf(this)) map._afterDraw();
+  };
+
   lifecycles.remove = function () {
     for (const map of mapsOf(this)) {
       map.remove();

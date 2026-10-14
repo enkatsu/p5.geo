@@ -18,4 +18,14 @@ export const examples = {
     description: 'A live CSV from the USGS, sized and colored by its columns.',
     webEditor: 'https://editor.p5js.org/KatsuyaEndoh/sketches/pRbJr6hLx',
   },
+  'geojson-rivers': {
+    title: 'GeoJSON: rivers',
+    description: "The world's major rivers as GeoJSON lines, drawn without a basemap.",
+    webEditor: 'https://editor.p5js.org/KatsuyaEndoh/sketches/ea1QfG2jc',
+  },
+  'animation-trip': {
+    title: 'Animation: trip',
+    description: 'A point travels from city to city, and the map follows it.',
+    webEditor: 'https://editor.p5js.org/KatsuyaEndoh/sketches/sFTJfN-a_',
+  },
 };

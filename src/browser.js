@@ -13,5 +13,6 @@ if (typeof p5.registerAddon === 'function') {
   const lifecycles = {};
   p5geo(p5, p5.prototype, lifecycles);
   p5.prototype.registerMethod('pre', lifecycles.predraw);
+  p5.prototype.registerMethod('post', lifecycles.postdraw);
   p5.prototype.registerMethod('remove', lifecycles.remove);
 }
