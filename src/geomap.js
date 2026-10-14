@@ -545,6 +545,95 @@ class GeoMap {
   }
 
   /**
+   * Saves the canvas as an image file with the basemap under it, like p5's `saveCanvas()`
+   * (which would save the sketch alone). Waits for the map to finish loading first, and adds
+   * the map's attribution in the bottom-right corner.
+   * @param {string} [filename='untitled'] - The file name, optionally with an extension.
+   * @param {string} [extension='png'] - `'png'`, `'jpg'` or `'webp'`.
+   * @returns {Promise<void>} Resolves once the download has started.
+   * @example
+   * function keyPressed() {
+   *   if (key === 's') myMap.saveCanvas('my-map', 'png');
+   * }
+   */
+  async saveCanvas(filename, extension) {
+    const canvas = await this._composite();
+    this._p.saveCanvas(canvas, filename, extension);
+  }
+
+  /**
+   * The map and the sketch drawn into one new canvas, at the sketch canvas's pixel size.
+   * @private
+   */
+  async _composite() {
+    await this.ready;
+    const source = this._p.canvas;
+    const blank = () => {
+      const canvas = document.createElement('canvas');
+      canvas.width = source.width;
+      canvas.height = source.height;
+      return canvas;
+    };
+    let out = blank();
+    let ctx = out.getContext('2d');
+    const map = this._map;
+    if (map) {
+      await this._mapLoaded();
+      // MapLibre's drawing buffer is only readable right after it renders.
+      map.redraw();
+      ctx.drawImage(map.getCanvas(), 0, 0, out.width, out.height);
+      try {
+        ctx.getImageData(0, 0, 1, 1);
+      } catch {
+        // A basemap served without CORS taints the canvas for good, so start over without it.
+        warnOnce('saveCanvas:cors', "p5.geo: saveCanvas() couldn't include this basemap (its server doesn't allow it), so it saved the sketch alone.");
+        out = blank();
+        ctx = out.getContext('2d');
+      }
+    }
+    ctx.drawImage(source, 0, 0);
+    if (map) this._drawAttribution(ctx, out.width / this._view.width);
+    return out;
+  }
+
+  /**
+   * Resolves once the style and the tiles on screen have loaded, or after 10 seconds.
+   * @private
+   */
+  _mapLoaded() {
+    const map = this._map;
+    if (map.isStyleLoaded() && map.areTilesLoaded()) return Promise.resolve();
+    return new Promise((resolve) => {
+      const timer = setTimeout(resolve, 10000);
+      map.once('idle', () => {
+        clearTimeout(timer);
+        resolve();
+      });
+    });
+  }
+
+  /**
+   * Writes the map's attribution, as shown on the map, in the bottom-right corner.
+   * @private
+   */
+  _drawAttribution(ctx, scale) {
+    const text = this._container.querySelector('.maplibregl-ctrl-attrib-inner')?.textContent.trim();
+    if (!text) return;
+    ctx.save();
+    ctx.scale(scale, scale);
+    ctx.font = '12px system-ui, sans-serif';
+    ctx.textBaseline = 'middle';
+    const width = ctx.measureText(text).width;
+    const x = this._view.width - width - 8;
+    const y = this._view.height - 10;
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
+    ctx.fillRect(x - 6, y - 10, width + 12, 20);
+    ctx.fillStyle = '#333';
+    ctx.fillText(text, x, y);
+    ctx.restore();
+  }
+
+  /**
    * Removes the map and puts the canvas back where it was. Also happens when the
    * sketch's `remove()` is called.
    */

@@ -251,6 +251,53 @@ async function newMapSketch(width = 800, height = 600, options = {}, renderer) {
     return rendered.length > 0 && close(rendered.at(-1), lon, 1e-9);
   });
 
+  await check('myMap.saveCanvas() saves the basemap under the sketch, with attribution', async (f) => {
+    const pixel = (canvas, x, y) => [...canvas.getContext('2d').getImageData(x, y, 1, 1).data];
+    const saveWith = async (p) => {
+      let saved;
+      p.saveCanvas = (canvas, filename, extension) => (saved = { canvas, filename, extension }); // no download
+      await p.myMap.saveCanvas('test', 'png');
+      return saved;
+    };
+    const drawRedSquare = (p) => {
+      p.noLoop();
+      p.draw = () => {
+        p.clear();
+        p.noStroke();
+        p.fill(255, 0, 0);
+        p.rect(10, 10, 50, 50);
+      };
+    };
+
+    const p = await newMapSketch();
+    drawRedSquare(p);
+    await p.redraw();
+    const saved = await saveWith(p);
+    const { canvas } = saved;
+    const d = p.pixelDensity();
+    f.file = [saved.filename, saved.extension];
+    f.size = [canvas.width, canvas.height];
+    f.inSquare = pixel(canvas, 30 * d, 30 * d);
+    f.onMap = pixel(canvas, 400 * d, 300 * d);
+    f.attribution = pixel(canvas, (800 - 4) * d, (600 - 10) * d);
+    p.remove();
+
+    const q = await sketch(800, 600, (q) => (q.myMap = q.createGeoMap({ basemap: false })));
+    await wait(100); // let p5 finish setting up before redraw()
+    drawRedSquare(q);
+    await q.redraw();
+    const plain = (await saveWith(q)).canvas;
+    f.noBasemapOutside = pixel(plain, 400 * d, 300 * d);
+    f.noBasemapInSquare = pixel(plain, 30 * d, 30 * d);
+    q.remove();
+
+    const red = ([r, g, b, a]) => r > 240 && g < 20 && b < 20 && a === 255;
+    return f.file[0] === 'test' && f.size[0] === 800 * d && f.size[1] === 600 * d
+      && red(f.inSquare) && f.onMap[3] === 255 && !red(f.onMap)
+      && f.attribution[0] > 200 && f.attribution[3] === 255
+      && f.noBasemapOutside[3] === 0 && red(f.noBasemapInSquare);
+  });
+
   await check('noLoop() sketches redraw when the map moves', async (f) => {
     const p = await newMapSketch();
     p.noLoop();

@@ -16,6 +16,18 @@ createGeoMap({ basemap: 'liberty' });
 
 The map can't be rotated or tilted, because shapes drawn on the canvas couldn't follow.
 
+## Saving an image
+
+p5's `saveCanvas()` saves only what the sketch drew. To save the map under it too, use `myMap.saveCanvas()`, with the same arguments:
+
+```js
+function keyPressed() {
+  if (key === 's') myMap.saveCanvas('my-map', 'png');
+}
+```
+
+It waits for the map to finish loading, and adds the map's attribution in the corner of the image.
+
 ## No basemap
 
 With `basemap: false`, nothing is added to the page. `toScreen()`, `fit()` and the rest work the same, so you can draw maps entirely with p5 shapes and style every pixel yourself:

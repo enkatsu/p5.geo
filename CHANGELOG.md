@@ -4,6 +4,10 @@ All notable changes to p5.geo are listed here. The format follows [Keep a Change
 
 ## [Unreleased]
 
+### Added
+
+- `myMap.saveCanvas()`: saves the canvas as an image with the basemap under the sketch and the map's attribution, like p5's `saveCanvas()`.
+
 ## [0.1.4] - 2026-10-14
 
 ### Fixed

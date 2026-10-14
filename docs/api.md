@@ -83,6 +83,7 @@ Methods accept numeric strings as well as numbers (see
     * [.interactive([enabled])](#GeoMap+interactive) ⇒ <code>boolean</code> \| [<code>GeoMap</code>](#GeoMap)
     * [.fit(data, [options])](#GeoMap+fit) ⇒ [<code>GeoMap</code>](#GeoMap)
     * [.flyTo(lat, lon, [zoom])](#GeoMap+flyTo) ⇒ [<code>GeoMap</code>](#GeoMap)
+    * [.saveCanvas([filename], [extension])](#GeoMap+saveCanvas) ⇒ <code>Promise.&lt;void&gt;</code>
     * [.remove()](#GeoMap+remove)
 
 <a name="GeoMap+ready"></a>
@@ -279,6 +280,27 @@ Animates to a place. Without a basemap, jumps there immediately.
 | lon | <code>number</code> |  |
 | [zoom] | <code>number</code> | Defaults to the current zoom level. |
 
+<a name="GeoMap+saveCanvas"></a>
+
+### myMap.saveCanvas([filename], [extension]) ⇒ <code>Promise.&lt;void&gt;</code>
+Saves the canvas as an image file with the basemap under it, like p5's `saveCanvas()`
+(which would save the sketch alone). Waits for the map to finish loading first, and adds
+the map's attribution in the bottom-right corner.
+
+**Kind**: instance method of [<code>GeoMap</code>](#GeoMap)  
+**Returns**: <code>Promise.&lt;void&gt;</code> - Resolves once the download has started.  
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| [filename] | <code>string</code> | <code>&quot;&#x27;untitled&#x27;&quot;</code> | The file name, optionally with an extension. |
+| [extension] | <code>string</code> | <code>&quot;&#x27;png&#x27;&quot;</code> | `'png'`, `'jpg'` or `'webp'`. |
+
+**Example**  
+```js
+function keyPressed() {
+  if (key === 's') myMap.saveCanvas('my-map', 'png');
+}
+```
 <a name="GeoMap+remove"></a>
 
 ### myMap.remove()

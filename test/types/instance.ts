@@ -24,6 +24,8 @@ new p5((p: p5) => {
     const c: LatLon = myMap.center();
     myMap.center(35, 139).zoom(10).flyTo(35, 139, 8).interactive(false);
     const locked: boolean = !myMap.interactive();
+    const saving: Promise<void> = myMap.saveCanvas('my-map', 'png');
+    void saving;
     const over: boolean = myMap.isMouseOver([{ lat: 35, lon: 139 }]) || myMap.contains({ outer: [], holes: [] }, 10, 10);
     void over;
     const here: LatLon = myMap.fromScreen(p.mouseX, p.mouseY);
