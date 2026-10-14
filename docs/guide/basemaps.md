@@ -27,7 +27,7 @@ myMap.fit(countries);
 
 ## Map data and attribution
 
-The default basemaps come from [OpenFreeMap](https://openfreemap.org/), a free, keyless map service run by Zsolt Ero, with map data © [OpenStreetMap](https://www.openstreetmap.org/copyright) contributors and tiles from [OpenMapTiles](https://www.openmaptiles.org/). p5.geo wouldn't be keyless without it.
+The default basemaps come from [OpenFreeMap](https://openfreemap.org/), a free, keyless map service run by Zsolt Ero, with map data © [OpenStreetMap](https://www.openstreetmap.org/copyright) contributors and tiles from [OpenMapTiles](https://www.openmaptiles.org/).
 
 OpenFreeMap's servers are paid for by donations. If p5.geo is useful to you, or you use it in a class or a workshop, please consider [sponsoring OpenFreeMap](https://github.com/sponsors/hyperknot).
 

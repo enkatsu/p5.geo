@@ -9,7 +9,7 @@ Add p5.geo after p5.js in your HTML:
 <script src="https://cdn.jsdelivr.net/npm/p5.geo@0.1/dist/p5.geo.min.js"></script>
 ```
 
-In the [p5.js Web Editor](https://editor.p5js.org/), open `index.html` from the sketch's file list and paste the second line below the line that loads p5.js. Nothing else is needed: no API key, no install.
+In the [p5.js Web Editor](https://editor.p5js.org/), open `index.html` from the sketch's file list and paste the second line below the line that loads p5.js. No API key or install is needed.
 
 ## Draw on a map
 

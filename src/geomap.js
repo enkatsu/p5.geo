@@ -18,9 +18,8 @@ function injectCss() {
   document.head.appendChild(style);
 }
 
-// Warn at most once per function and argument, so a mistake inside draw() doesn't flood
-// the console. The key is never the bad value itself, which keeps `warned` small: it can
-// only hold one entry per argument of the public methods.
+// Warn at most once per function and argument (not per value, so `warned` stays small),
+// so a mistake inside draw() doesn't flood the console.
 const warned = new Set();
 function warnOnce(key, message) {
   if (warned.has(key)) return;
@@ -225,9 +224,8 @@ class GeoMap {
   }
 
   /**
-   * MapLibre drags with mouse events, which browsers don't send at all once a pointerdown
-   * has been cancelled. p5 cancels it when mousePressed() returns false, a line often copied
-   * without knowing what it does, so the map silently stops dragging. Explain it instead.
+   * MapLibre drags with mouse events, which browsers don't send once a pointerdown has been
+   * cancelled, as p5 does when mousePressed() returns false. Warn instead of failing silently.
    * Checked after the event has reached every listener, including p5's on the window.
    * @private
    */
@@ -365,7 +363,7 @@ class GeoMap {
 
   /**
    * Whether the mouse is over a polygon, as drawn with `toScreen()`. Always `false` while the
-   * mouse is outside the canvas. Handy for highlighting a country or region under the mouse.
+   * mouse is outside the canvas.
    * @param {{outer: Array<LatLon>, holes: Array<Array<LatLon>>}|Array<LatLon>} polygon - An item
    *   from {@link geoPolygons}, or an outline as an array of `{ lat, lon }`.
    * @returns {boolean}
@@ -454,14 +452,10 @@ class GeoMap {
    */
   /**
    * Gets or sets whether the map can be dragged and zoomed with the mouse, touch and keyboard.
-   * With no argument, returns `true` or `false`. With `interactive(false)`, the map stays put
-   * (code can still move it with {@link GeoMap#center}, {@link GeoMap#zoom},
-   * {@link GeoMap#flyTo} and {@link GeoMap#fit}), and dragging on the canvas only reaches the
-   * sketch, for example `mouseDragged()`. Has no effect with `basemap: false`.
-   *
-   * Use `interactive(false)` if the sketch handles the mouse itself: returning `false` from
-   * `mousePressed()` cancels the press, and the map can no longer be dragged with the mouse
-   * anyway (p5.geo warns about this in the console).
+   * A locked map can still be moved by code (`center()`, `zoom()`, `flyTo()`, `fit()`), and
+   * dragging on the canvas only reaches the sketch, such as `mouseDragged()`. Use it when the
+   * sketch handles the mouse itself; returning `false` from `mousePressed()` also stops mouse
+   * dragging, with a warning. Has no effect with `basemap: false`.
    * @param {boolean} [enabled]
    * @returns {boolean|GeoMap} Whether the map is interactive, or the `GeoMap` when setting.
    * @example

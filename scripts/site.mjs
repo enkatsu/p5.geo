@@ -1,9 +1,6 @@
-// Prepares the documentation site (docs/, built with VitePress):
-// - builds the library, then copies each examples/<name>/ to docs/public/sketches/<name>/ and
-//   the built dist/ files to docs/public/dist/, so the site runs the examples against the same
-//   code the docs describe (sketches/, not examples/, which holds the pages about them);
-// - writes Web Editor versions of the examples to dist/web-editor/, loading p5.geo from the
-//   CDN instead of ../../dist/, ready to paste into the p5.js Web Editor.
+// Prepares the documentation site: builds the library, copies examples/<name>/ to
+// docs/public/sketches/<name>/ (docs/examples/ holds the pages about them) with dist/ next to
+// them, and writes Web Editor versions that load p5.geo from the CDN to dist/web-editor/.
 import { execFileSync } from 'node:child_process';
 import { cp, mkdir, readdir, readFile, rm, writeFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';

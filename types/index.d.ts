@@ -1,13 +1,7 @@
-// Types for p5.geo with p5.js 2.x, for instance mode. For global mode, use "p5.geo/global".
-// With a bundler, register the default export: `p5.registerAddon(geo)`.
-//
-// Known limitation: `p5.geo` (a static property of the p5 class) isn't typed.
-// p5's types expose the class only as a default export, and TypeScript can add instance members
-// to it (`export default interface p5`) but not static ones. Use the `Geo` type with a cast:
-//   const geo = (p5 as unknown as { geo: Geo }).geo;
-// With a bundler, import them by name instead: `import { project } from 'p5.geo'`.
-// The GeoMap class and the data and projection functions are generated from the JSDoc
-// comments in src/ (`npm run types`); this file adds them to p5.
+// Types for p5.geo with p5.js 2.x (instance mode and named exports). Global mode: "p5.geo/global".
+// GeoMap and the functions are generated from the JSDoc in src/ (`npm run types`); this file
+// adds them to p5. `p5.geo` itself can't be typed (TypeScript can't add static members to p5's
+// default-exported class), so import those functions by name.
 import type { GeoMap } from '../dist/types/geomap.js';
 import type * as projection from '../dist/types/projection.js';
 import type { geoPoints, geoLines, geoPolygons, geoBounds } from '../dist/types/data.js';

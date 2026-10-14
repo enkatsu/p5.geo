@@ -15,7 +15,7 @@ for (const country of countries) {
 
 It's `false` while the mouse is outside the canvas. To test another position, such as a touch, use `myMap.contains(polygon, x, y)`.
 
-For points, p5's `dist()` is all you need:
+For points, use p5's `dist()`:
 
 ```js
 const p = myMap.toScreen(place);

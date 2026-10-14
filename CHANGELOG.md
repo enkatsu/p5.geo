@@ -21,7 +21,7 @@ No changes to the library itself.
 
 ### Removed
 
-- `p5.GeoMap`, following the p5.js library guidelines (no classes on `p5` itself). Use the object `createGeoMap()` returns, or `import { GeoMap } from 'p5.geo'` with a bundler. No one was using it yet, so this went into a patch release.
+- `p5.GeoMap`, following the p5.js library guidelines (no classes on `p5` itself). Use the object `createGeoMap()` returns, or `import { GeoMap } from 'p5.geo'` with a bundler. (A breaking change, released as a patch because it had no users yet.)
 
 ## [0.1.1] - 2026-10-11
 
