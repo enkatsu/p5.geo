@@ -11,7 +11,7 @@
     "maplibre",
     "visualization"
   ],
-  "homepage": "https://github.com/enkatsu/p5.geo#readme",
+  "homepage": "https://p5geo.enkatsu.org/",
   "bugs": {
     "url": "https://github.com/enkatsu/p5.geo/issues"
   },

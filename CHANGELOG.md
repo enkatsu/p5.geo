@@ -10,7 +10,7 @@ No changes to the library itself.
 
 ### Changed
 
-- The README links to the new documentation site, with guides and live examples: https://enkatsu.github.io/p5.geo/
+- The README links to the new documentation site, with guides and live examples: https://p5geo.enkatsu.org/
 - The npm package now includes this changelog.
 
 ## [0.1.2] - 2026-10-12

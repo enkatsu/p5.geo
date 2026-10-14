@@ -4,8 +4,8 @@ import { examples } from './examples.js';
 export default defineConfig({
   title: 'p5.geo',
   description: 'Geospatial visualization for p5.js: maps and geographic data with the drawing functions you already know.',
-  // Served from https://enkatsu.github.io/p5.geo/
-  base: '/p5.geo/',
+  // Served from https://p5geo.enkatsu.org/ (custom domain set in the repository's Pages settings).
+  base: '/',
   cleanUrls: true,
   // docs/templates/ holds the source of docs/api.md (npm run docs), not pages.
   srcExclude: ['templates/**'],

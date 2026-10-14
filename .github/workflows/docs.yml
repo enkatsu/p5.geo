@@ -1,5 +1,5 @@
 # Builds the documentation site (docs/, VitePress) and publishes it to GitHub Pages:
-# https://enkatsu.github.io/p5.geo/
+# https://p5geo.enkatsu.org/
 # Requires Settings → Pages → Build and deployment → Source: "GitHub Actions".
 name: Docs
 

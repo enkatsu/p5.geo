@@ -11,7 +11,7 @@ p5.geo lets you work with maps and geographic data using the drawing functions y
 
 > **Status:** Early development. The API may change.
 
-**Documentation, guides and live examples: https://enkatsu.github.io/p5.geo/**
+**Documentation, guides and live examples: https://p5geo.enkatsu.org/**
 
 ## Getting started
 
@@ -39,7 +39,7 @@ function draw() {
 }
 ```
 
-Drag and scroll the map: the circle stays on Tokyo Tower. Next, see the [guide](https://enkatsu.github.io/p5.geo/guide/getting-started), the [examples](https://enkatsu.github.io/p5.geo/examples/) and the [API reference](docs/api.md). For bundlers and TypeScript, see [Using with a bundler](https://enkatsu.github.io/p5.geo/guide/bundlers).
+Drag and scroll the map: the circle stays on Tokyo Tower. Next, see the [guide](https://p5geo.enkatsu.org/guide/getting-started), the [examples](https://p5geo.enkatsu.org/examples/) and the [API reference](docs/api.md). For bundlers and TypeScript, see [Using with a bundler](https://p5geo.enkatsu.org/guide/bundlers).
 
 ## Roadmap
 
