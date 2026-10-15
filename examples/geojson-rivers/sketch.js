@@ -39,6 +39,14 @@ function draw() {
     textSize(16);
     text(hovered.name, 16, height - 16);
   }
+
+  // Credit the data source.
+  noStroke();
+  fill(160);
+  textSize(12);
+  textAlign(RIGHT);
+  text('Made with Natural Earth', width - 12, height - 12);
+  textAlign(LEFT);
 }
 
 function windowResized() {
