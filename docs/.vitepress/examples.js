@@ -23,6 +23,11 @@ export const examples = {
     description: "The world's major rivers as GeoJSON lines, drawn without a basemap. Hover a river.",
     webEditor: 'https://editor.p5js.org/KatsuyaEndoh/sketches/ea1QfG2jc',
   },
+  'geolocation-track': {
+    title: 'Geolocation: your track',
+    description: 'Your location from the browser, and the track you walk. Best on a phone.',
+    webEditor: 'https://editor.p5js.org/KatsuyaEndoh/sketches/9yBGkMv23',
+  },
   'animation-trip': {
     title: 'Animation: trip',
     description: 'A point travels from city to city, and the map follows it.',
