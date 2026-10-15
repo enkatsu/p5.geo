@@ -41,20 +41,6 @@ function draw() {
 
 Drag and scroll the map: the circle stays on Tokyo Tower. Next, see the [guide](https://p5geo.enkatsu.org/guide/getting-started), the [examples](https://p5geo.enkatsu.org/examples/) and the [API reference](docs/api.md). For bundlers and TypeScript, see [Using with a bundler](https://p5geo.enkatsu.org/guide/bundlers).
 
-## Roadmap
-
-- [x] **First milestone:** In the p5.js Web Editor, draw points from a CSV with `circle()` on a keyless basemap, and have them follow the map while dragging.
-- [x] Projection-only mode (no basemap)
-- [x] GeoJSON / CSV helpers
-- [x] Locking the map (`interactive: false`) so the sketch can use the mouse
-- [x] Hit-testing for polygons, lines and points (`isMouseOver()`, `contains()`)
-- [x] `saveCanvas()` that composites the map and the sketch
-- [x] Global mode and instance mode support
-- [x] npm package for bundlers, with TypeScript types
-- [ ] Example gallery (earthquakes, GPS tracks, choropleths, animated movement)
-- [ ] Optional 3D mode (pitch / bearing) via MapLibre custom layers
-- [ ] Submission to the [p5.js Libraries](https://p5js.org/libraries/) page
-
 ## Map data and attribution
 
 The default basemaps come from [OpenFreeMap](https://openfreemap.org/), with map data © [OpenStreetMap](https://www.openstreetmap.org/copyright) contributors and tiles from [OpenMapTiles](https://www.openmaptiles.org/). OpenFreeMap's servers are paid for by donations; if p5.geo is useful to you, please consider [sponsoring OpenFreeMap](https://github.com/sponsors/hyperknot). p5.geo shows the required attribution on the map; please don't hide it.
@@ -81,7 +67,7 @@ npm run docs:dev  # the documentation site
 
 Some behavior needs a real browser: with `npm run dev` running, open http://localhost:8000/test/browser/ and check that every item passes.
 
-Ideas, issues and pull requests are welcome.
+Ideas, issues and pull requests are welcome. This project follows the [p5.js Code of Conduct](https://p5js.org/code-of-conduct/).
 
 ## License
 
